@@ -40,7 +40,7 @@ export const NavigationList = () => {
               // href={item.link}
               className={`${listItemStyle} ${
                 index === navItems.selected ? "underline text-white" : ""
-              } text-[#AFAFAF] hover:underline text-[1.4em] hover:translate-x-[-0.2em] transition-all duration-300`}
+              } text-[#AFAFAF] hover:underline text-[1.2em] hover:translate-x-[-0.2em] transition-all duration-300`}
               onClick={() => setNavItems({ ...navItems, selected: index })}
             >
               {item.label}
@@ -51,7 +51,7 @@ export const NavigationList = () => {
         {navItems.items.map((item, index) => {
           if (item.type !== "link") return;
           return (
-            <div className="flex text-[1.4em] items-center justify-center hover:translate-x-[-0.2em] transition-all duration-300 text-[#AFAFAF] hover:text-white">
+            <div key={index+item.label} className="flex text-[1.2em] items-center justify-center hover:translate-x-[-0.2em] transition-all duration-300 text-[#AFAFAF] hover:text-white">
               <a
                 key={index}
                 href={item.link}
