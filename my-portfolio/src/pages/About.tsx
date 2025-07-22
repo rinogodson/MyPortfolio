@@ -1,13 +1,21 @@
 import ImageView from "@/components/ImageView/ImageView";
 
-function About({lora, ibmPlexSans}: {lora: {className: string}, ibmPlexSans: {className: string}}) {
+function About({
+  lora,
+  ibmPlexSans,
+}: {
+  lora: { className: string };
+  ibmPlexSans: { className: string };
+}) {
   return (
     <>
-      <ImageView
-        url={
-          "https://images.unsplash.com/photo-1734983235410-cbbc5f5fcdaf?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        }
-      />
+      {
+        //  <ImageView
+        // url={
+        // "https://images.unsplash.com/photo-1734983235410-cbbc5f5fcdaf?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        // }
+        // />
+      }
       <div className="w-full  font-[Lora] text-right text-[1.1em] pr-5 text-[#AFAFAF]">
         it's cool huh?
       </div>
