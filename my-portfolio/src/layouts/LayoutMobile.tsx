@@ -1,6 +1,8 @@
 import About from "@/pages/About";
 import { ExternalLinkIcon } from "lucide-react";
 
+import { motion } from "motion/react";
+
 import { Lora, IBM_Plex_Sans } from "next/font/google";
 import { useState } from "react";
 
@@ -46,64 +48,63 @@ function LayoutMobile() {
 
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden">
-      <div className="p-[1em] flex flex-col h-[100vh] w-[100%] bg-[#1A1A1A] overflow-scroll" onClick={() => {if(menuOpen)setMenuOpen(false);}}>
+      <div
+        className="p-[1em] flex flex-col h-[100vh] w-[100%] bg-[#1A1A1A] overflow-scroll"
+        onClick={() => {
+          if (menuOpen) setMenuOpen(false);
+        }}
+      >
         <About lora={lora} ibmPlexSans={ibmPlexSans} />
       </div>
-      <div 
-        style={{
+      <motion.div
+        initial={{ height: 0 }}
+        animate={{
           height: menuOpen ? "60vh" : "2.5em",
-          transition: "all 0.3s ease",
+          transition: { duration: 0.5, type: "spring", bounce: 0.1 },
         }}
-        className="w-screen flex justify-center items-center bg-black absolute bottom-0 overflow-scroll" onClick={() => setMenuOpen(true)}>
-        {menuOpen ? (
-          <div className="place-self-start mt-10 ml-8 w-full">
-            <nav className="flex flex-col items-start ">
-              {navItems.items.map((item, index) => {
-                if (item.type !== "page") return;
-                return (
-                  <a
-                    key={index}
-                    // href={item.link}
-                    className={`${listItemStyle} ${index === navItems.selected ? "underline text-white" : ""
-                      } text-[#AFAFAF] hover:underline text-[1.2em] hover:translate-x-[-0.2em] transition-all duration-300`}
-                    onClick={() =>
-                      setNavItems({ ...navItems, selected: index })
-                    }
-                  >
-                    {item.label}
-                  </a>
-                );
-              })}
-              <div className="w-full h-[1px] my-5" />
-              {navItems.items.map((item, index) => {
-                if (item.type !== "link") return;
-                return (
-                  <div
-                    key={index + item.label}
-                    className="flex text-[1.2em] items-center justify-center hover:translate-x-[-0.2em] transition-all duration-300 text-[#AFAFAF] hover:text-white"
-                  >
-                    <a
-                      key={index}
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={listItemStyle + " mr-2"}
-                    >
-                      {item.label}
-                    </a>
-                    <ExternalLinkIcon />
-                  </div>
-                );
-              })}
-            </nav>
-          </div>
-        ) : (
-          // add stuff here
-          <a className="text-white text-[1.2em]">
-            {navItems.items[navItems.selected].label}
-          </a>
-        )}
-      </div>
+        className="w-screen flex justify-start items-center bg-black absolute bottom-0 overflow-hidden"
+        onClick={() => {
+          if (!menuOpen) setMenuOpen(true);
+        }}
+      >
+        <motion.ul
+          key="nav-items"
+          layout
+          transition={{ type: "spring", bounce: 0.1 }}
+          onClick={() => {
+            if (!menuOpen) setMenuOpen(true);
+          }}
+          style={{
+            flexDirection: menuOpen ? "column" : "row",
+          }}
+          className={`flex justify-start pl-6 ${
+            menuOpen ? "flex-col gap-4" : "flex-row gap-6"
+          } items-center`}
+        >
+          {navItems.items.map((item, index) => (
+            <motion.li
+              layout
+              key={index}
+              className={`${listItemStyle} ${menuOpen ? "text-white" : "text-[rgba(255,255,255,0.4)]"} text-center ${
+                navItems.selected === index
+                  ? `text-white bold ${menuOpen && "underline"}`
+                  : ""
+              }`}
+              onClick={() => {
+                if (menuOpen) {
+                  setNavItems((prev) => ({ ...prev, selected: index }));
+                }
+                setMenuOpen(!menuOpen);
+              }}
+            >
+              {item.label}
+              {item.type === "link" && menuOpen && (
+                <ExternalLinkIcon className="inline ml-1" />
+              )}
+            </motion.li>
+          ))}
+        </motion.ul>
+      </motion.div>
     </div>
   );
 }
