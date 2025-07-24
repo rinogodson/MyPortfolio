@@ -2,7 +2,6 @@ import About from "@/pages/About";
 import { ExternalLinkIcon } from "lucide-react";
 
 import { motion } from "motion/react";
-import { nav } from "motion/react-m";
 
 import { Lora, IBM_Plex_Sans } from "next/font/google";
 import { useEffect, useRef, useState } from "react";
@@ -18,8 +17,10 @@ const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
 });
 
+const animationParameters: any = { duration: 0.4, ease: [0.32, 1.05, 0.5, 1] };
+
 function LayoutMobile() {
-  const listItemStyle = "cursor-pointer w-full h-full my-2";
+  const listItemStyle = "flex cursor-pointer my-2";
   const [menuOpen, setMenuOpen] = useState(false);
   const [navItems, setNavItems] = useState<{
     selected: Number;
@@ -57,8 +58,8 @@ function LayoutMobile() {
     ) {
       itemRefs.current[navItems.items[navItems.selected].label]?.scrollIntoView(
         {
-          behavior: "smooth",
-          inline: "center",
+          behavior: "instant",
+          inline: "end",
           block: "nearest",
         },
       );
@@ -68,7 +69,19 @@ function LayoutMobile() {
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden">
       <div
-        className="p-[1em] flex flex-col h-[100vh] w-[100%] bg-[#1A1A1A] overflow-scroll"
+        id="shadowobject"
+        style={{
+          position: "absolute",
+          width: "100%",
+          height: "10%",
+          bottom: 0,
+          filter: "blur(50px)",
+          background: "rgba(0, 0, 0, 1)",
+          pointerEvents: "none",
+        }}
+      ></div>
+      <div
+        className="p-[1em] pb-[13em] flex flex-col h-[100vh] w-[100%] bg-[#1A1A1A] overflow-scroll overflow-x-hidden no-scrollbar"
         onClick={() => {
           if (menuOpen) setMenuOpen(false);
         }}
@@ -76,51 +89,55 @@ function LayoutMobile() {
         <About lora={lora} ibmPlexSans={ibmPlexSans} />
       </div>
       <motion.div
-        initial={{ height: 0 }}
+        initial={false}
         animate={{
-          height: menuOpen ? "60vh" : "4em",
-          transition: { duration: 0.5, type: "spring", bounce: 0.1 },
+          height: menuOpen ? "38rem" : "4em",
+          width: menuOpen ? "60%" : "90%",
+          paddingInline: menuOpen ? "5em" : "2em",
+          borderRadius: menuOpen ? "3em" : "5em",
+          bottom: menuOpen ? "1em" : "1em",
+          right: menuOpen ? "1em" : "calc(5vw)",
         }}
+        transition={animationParameters}
         style={{
           justifyContent: !menuOpen ? "flex-start" : "center",
+          border: "1px solid rgba(255, 255, 255, 0.1)",
         }}
-        className={`${!menuOpen ? "overflow-x-auto no-scrollbar" : "overflow-scroll"} w-screen flex items-center bg-black absolute bottom-0`}
+        className={`${menuOpen ? "overflow-hidden" : "overflow-hidden"} no-scrollbar flex items-center bg-[rgba(0,0,0,0.6)] backdrop-blur-2xl absolute`}
         onClick={(e) => {
           if (!menuOpen) setMenuOpen(true);
           e.stopPropagation();
         }}
       >
         <motion.ul
+          initial={false}
           key="nav-items"
           layout
-          transition={{ type: "spring", bounce: 0.1 }}
+          transition={animationParameters}
           style={{
             flexDirection: menuOpen ? "column" : "row",
             justifyContent: "start",
             alignItems: "center",
             textAlign: "left",
           }}
-          className={`flex pl-6 ${
-            menuOpen ? "flex-col gap-4" : "flex-row gap-6"
-          } `}
+          className={`flex ${menuOpen ? "flex-col gap-4" : "flex-row gap-6"} `}
         >
           {navItems.items.map(
             (item, index) =>
-              ( menuOpen || item.type == "page" ) && (
+              item.type == "page" && (
                 <motion.li
+                  initial={false}
                   layout
-                  transition={{ type: "spring", bounce: 0.1 }}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  transition={animationParameters}
+                  animate={{ opacity: 1, x: 0 }}
                   ref={(el) => {
                     return (itemRefs.current[item.label] = el);
                   }}
                   key={index}
-                  className={`${listItemStyle} ${menuOpen ? "text-white" : "text-[rgba(255,255,255,0.4)] text-[1.5em]"} text-center ${
-                    navItems.selected === index
-                      ? `text-white bold ${menuOpen && "underline"} text-[1.2em]`
-                      : "text-[1.2em]"
-                  }`}
+                  className={`${listItemStyle} ${menuOpen ? "text-white h-[2rem] p-0 m-0 items-start content-start w-full" : "text-[rgba(255,255,255,0.2)] text-[1.5em]"} text-center ${navItems.selected === index
+                      ? `text-white bold ${menuOpen && "underline"} text-[1.5em]`
+                      : "text-[1.5em]"
+                    }`}
                   onClick={() => {
                     if (menuOpen) {
                       setNavItems((prev) => ({ ...prev, selected: index }));
@@ -129,11 +146,40 @@ function LayoutMobile() {
                   }}
                 >
                   {item.label}
-                  {item.type === "link" && menuOpen && (
-                    <ExternalLinkIcon className="inline ml-1" />
-                  )}
                 </motion.li>
               ),
+          )}
+
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -100, x: 40 }}
+              animate={{ opacity: 1, y: 0, x: 0 }}
+              transition={animationParameters}
+              className="flex flex-col content-end items-end w-full overflow-hidden"
+            >
+              {navItems.items.map(
+                (item, index) =>
+                  item.type == "link" && (
+                    <motion.li
+                      layout
+                      transition={animationParameters}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      key={index}
+                      className={`${listItemStyle} text-[rgba(255,255,255,0.4)] text-[1.5em] items-start content-end`}
+                    >
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2"
+                      >
+                        {item.label} <ExternalLinkIcon size={16} />
+                      </a>
+                    </motion.li>
+                  ),
+              )}
+            </motion.div>
           )}
         </motion.ul>
       </motion.div>

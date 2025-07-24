@@ -21,7 +21,6 @@ function ImageView({url}: { url: string }) {
       {isModalOpen && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4 animate-fade-in cursor-crosshair"
-          onClick={closeModal}
         >
           <div 
             className="relative max-w-7xl max-h-[90vh] animate-scale-in"
