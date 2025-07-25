@@ -1,7 +1,7 @@
 import About from "@/pages/About";
 import { ExternalLinkIcon } from "lucide-react";
 
-import { motion } from "motion/react";
+import { motion, number } from "motion/react";
 
 import { Lora, IBM_Plex_Sans } from "next/font/google";
 import { useEffect, useRef, useState } from "react";
@@ -23,7 +23,7 @@ function LayoutMobile() {
   const listItemStyle = "flex cursor-pointer my-2";
   const [menuOpen, setMenuOpen] = useState(false);
   const [navItems, setNavItems] = useState<{
-    selected: Number;
+    selected: number;
     items: { label: string; type: string; link: string }[];
   }>({
     selected: 0,
@@ -130,8 +130,8 @@ function LayoutMobile() {
                   layout
                   transition={animationParameters}
                   animate={{ opacity: 1, x: 0 }}
-                  ref={(el) => {
-                    return (itemRefs.current[item.label] = el);
+                  ref={(el: HTMLLIElement | null) => {
+                    itemRefs.current[item.label] = el;
                   }}
                   key={index}
                   className={`${listItemStyle} ${menuOpen ? "text-white h-[2rem] p-0 m-0 items-start content-start w-full" : "text-[rgba(255,255,255,0.2)] text-[1.5em]"} text-center ${navItems.selected === index
