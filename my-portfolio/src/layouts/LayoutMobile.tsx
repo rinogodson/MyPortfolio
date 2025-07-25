@@ -1,4 +1,4 @@
-import About from "@/pages/About";
+import About from "@/seo-pages/About";
 import { ExternalLinkIcon } from "lucide-react";
 
 import { motion, number } from "motion/react";

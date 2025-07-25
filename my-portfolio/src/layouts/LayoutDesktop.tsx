@@ -1,6 +1,6 @@
 import { NavigationList } from "@/components/NavigationList/NavigationList";
 import PageContent from "@/components/PageContent/PageContent";
-import About from "@/pages/About";
+import About from "@/seo-pages/About";
 import { Lora, IBM_Plex_Sans } from "next/font/google";
 const lora = Lora({
   subsets: ["latin"],
