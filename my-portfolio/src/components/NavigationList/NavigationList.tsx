@@ -11,10 +11,10 @@ export const NavigationList = () => {
     selected: 0,
     items: [
       { label: "about", type: "page", link: "/" },
-      { label: "projects", type: "page", link: "/about" },
-      { label: "bookmarks", type: "page", link: "/projects" },
-      { label: "resume", type: "page", link: "/contact" },
-      { label: "hackclub", type: "page", link: "/contact" },
+      { label: "projects", type: "page", link: "/projects" },
+      { label: "bookmarks", type: "page", link: "/bookmarks" },
+      { label: "resume", type: "page", link: "/resume" },
+      { label: "hackclub", type: "page", link: "/hc" },
       { label: "github", type: "link", link: "https://github.com/rinogodson" },
       {
         label: "linkedin",
@@ -37,10 +37,9 @@ export const NavigationList = () => {
           return (
             <a
               key={index}
-              // href={item.link}
-              className={`${listItemStyle} ${
-                index === navItems.selected ? "underline text-white" : ""
-              } text-[#AFAFAF] hover:underline text-[1.2em] hover:translate-x-[-0.2em] transition-all duration-300`}
+              href={item.link}
+              className={`${listItemStyle} ${index === navItems.selected ? "underline text-white" : ""
+                } text-[#AFAFAF] hover:underline text-[1.2em] hover:translate-x-[-0.2em] transition-all duration-300`}
               onClick={() => setNavItems({ ...navItems, selected: index })}
             >
               {item.label}
@@ -51,7 +50,10 @@ export const NavigationList = () => {
         {navItems.items.map((item, index) => {
           if (item.type !== "link") return;
           return (
-            <div key={index+item.label} className="flex text-[1.2em] items-center justify-center hover:translate-x-[-0.2em] transition-all duration-300 text-[#AFAFAF] hover:text-white">
+            <div
+              key={index + item.label}
+              className="flex text-[1.2em] items-center justify-center hover:translate-x-[-0.2em] transition-all duration-300 text-[#AFAFAF] hover:text-white"
+            >
               <a
                 key={index}
                 href={item.link}
