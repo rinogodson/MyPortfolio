@@ -1,18 +1,23 @@
+"use client";
+import Head from "next/head";
 import "./globals.css";
-import { headers } from "next/headers";
-import dynamic from "next/dynamic";
+import { LayoutDesktop } from "@/layouts/LayoutDesktop";
+import LayoutMobile from "@/layouts/LayoutMobile";
+import { useEffect, useState } from "react";
 
-const LayoutDesktop = dynamic(() => import("@/layouts/LayoutDesktop"), {
-  ssr: false,
-});
-const LayoutMobile = dynamic(() => import("@/layouts/LayoutMobile"), {
-  ssr: false,
-});
+function useIsDesktop(breakpoint = 900) {
+  const [isDesktop, setIsDesktop] = useState("loading");
 
-function useIsDesktop(userAgent: string): "desktop" | "mobile" | null {
-  return !/Mobi|Android|iPhone|iPad|iPod/i.test(userAgent)
-    ? "desktop"
-    : "mobile";
+  useEffect(() => {
+    const updateMedia = () => {
+      setIsDesktop(window.innerWidth >= breakpoint ? "desktop" : "mobile");
+    };
+    updateMedia();
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+  }, [breakpoint]);
+
+  return isDesktop;
 }
 
 export default function RootLayout({
@@ -20,18 +25,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userAgent = headers().get("user-agent") || "";
-  const isDesktop = useIsDesktop(userAgent);
+  const isDesktop = useIsDesktop();
   return (
     <html lang="en">
-      <head>
+      <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <meta name="description" content="Developer Portfolio of Rino Godson" />
-        <title>Rino Godson | Developer Portfolio</title>{" "}
+        <meta
+          name="keywords"
+          content="Rino Godson, Developer, Portfolio, Web Development"
+        />
         <meta name="author" content="Rino Godson" />
         <meta title="Rino Godson | Developer Portfolio" />
-      </head>
+      </Head>
       <body className={`overflow-hidden antialiased bg-black text-white `}>
         <div className="flex flex-col h-screen">
           <div className="flex-1 overflow-hidden">
