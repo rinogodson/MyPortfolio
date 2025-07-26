@@ -1,5 +1,6 @@
 import ImageView from "@/components/ImageView/ImageView";
 
+
 function About({
   lora,
   ibmPlexSans,

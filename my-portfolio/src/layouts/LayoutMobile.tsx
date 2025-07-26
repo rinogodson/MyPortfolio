@@ -1,25 +1,13 @@
-import About from "@/seo-pages/About";
 import { ExternalLinkIcon } from "lucide-react";
 
-import { motion, number } from "motion/react";
+import { motion } from "motion/react";
 
-import { Lora, IBM_Plex_Sans } from "next/font/google";
 import { useEffect, useRef, useState } from "react";
 
-const lora = Lora({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-lora",
-});
-const ibmPlexSans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-ibm-plex-sans",
-});
 
 const animationParameters: any = { duration: 0.4, ease: [0.32, 1.05, 0.5, 1] };
 
-function LayoutMobile() {
+function LayoutMobile({ children }: { children?: React.ReactNode }) {
   const listItemStyle = "flex cursor-pointer my-2";
   const [menuOpen, setMenuOpen] = useState(false);
   const [navItems, setNavItems] = useState<{
@@ -86,7 +74,7 @@ function LayoutMobile() {
           if (menuOpen) setMenuOpen(false);
         }}
       >
-        <About lora={lora} ibmPlexSans={ibmPlexSans} />
+        {children}
       </div>
       <motion.div
         initial={false}

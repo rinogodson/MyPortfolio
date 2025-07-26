@@ -1,26 +1,47 @@
-import type { Metadata } from "next";
-import Head from "next/head";
 import "./globals.css";
+import { headers } from "next/headers";
+import dynamic from "next/dynamic";
 
-export const metadata: Metadata = {
-  title: "Rino Godson | Portfolio",
-  description: "Developer Portfolio of Rino Godson",
-};
+const LayoutDesktop = dynamic(() => import("@/layouts/LayoutDesktop"), {
+  ssr: false,
+});
+const LayoutMobile = dynamic(() => import("@/layouts/LayoutMobile"), {
+  ssr: false,
+});
+
+function useIsDesktop(userAgent: string): "desktop" | "mobile" | null {
+  return !/Mobi|Android|iPhone|iPad|iPod/i.test(userAgent)
+    ? "desktop"
+    : "mobile";
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userAgent = headers().get("user-agent") || "";
+  const isDesktop = useIsDesktop(userAgent);
   return (
     <html lang="en">
-      <Head>
+      <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <meta name="description" content="Developer Portfolio of Rino Godson" />
-      </Head>
+        <title>Rino Godson | Developer Portfolio</title>{" "}
+        <meta name="author" content="Rino Godson" />
+        <meta title="Rino Godson | Developer Portfolio" />
+      </head>
       <body className={`overflow-hidden antialiased bg-black text-white `}>
-        {children}
+        <div className="flex flex-col h-screen">
+          <div className="flex-1 overflow-hidden">
+            {isDesktop === "desktop" ? (
+              <LayoutDesktop>{children}</LayoutDesktop>
+            ) : isDesktop === "mobile" ? (
+              <LayoutMobile>{children}</LayoutMobile>
+            ) : null}
+          </div>
+        </div>
       </body>
     </html>
   );
