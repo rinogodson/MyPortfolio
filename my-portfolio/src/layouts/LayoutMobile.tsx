@@ -1,13 +1,11 @@
 import { ExternalLinkIcon } from "lucide-react";
 
 import { motion } from "motion/react";
-import { useLayoutContent } from "@/contexts/LayoutContentContext";
 import { useEffect, useRef, useState, memo } from "react";
 
 const animationParameters: any = { duration: 0.4, ease: [0.32, 1.05, 0.5, 1] };
 
-function LayoutMobile() {
-  const content = useLayoutContent();
+function LayoutMobile({children}: { children?: React.ReactNode }) {
   const listItemStyle = "flex cursor-pointer my-2";
   const [menuOpen, setMenuOpen] = useState(false);
   const [navItems, setNavItems] = useState<{
@@ -86,7 +84,7 @@ function LayoutMobile() {
           if (menuOpen) setMenuOpen(false);
         }}
       >
-        {content}
+        {children}
       </div>
       <motion.div
         initial={false}

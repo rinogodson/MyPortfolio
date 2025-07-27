@@ -1,14 +1,12 @@
 import PageContent from "@/components/PageContent/PageContent";
 import { NavigationList } from "@/components/NavigationList/NavigationList";
-import { useLayoutContent } from "@/contexts/LayoutContentContext";
 import { memo } from "react";
 
-function LayoutDesktop() {
-  const content = useLayoutContent();
+function LayoutDesktop({ children }: { children?: React.ReactNode }) {
   return (
     <div className="h-screen w-screen grid grid-cols-[1fr_60vw_1fr] place-items-end overflow-hidden">
       <div></div>
-      <PageContent>{content}</PageContent>
+      <PageContent>{children}</PageContent>
       <NavigationList />
     </div>
   );

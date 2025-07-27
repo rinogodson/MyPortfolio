@@ -1,6 +1,5 @@
 import Head from "next/head";
 import "./globals.css";
-import { LayoutContentProvider } from "@/contexts/LayoutContentContext";
 
 export default function RootLayout({
   children,
@@ -22,9 +21,7 @@ export default function RootLayout({
       </Head>
       <body className={`overflow-hidden antialiased bg-black text-white `}>
         <div className="flex flex-col h-screen">
-          <LayoutContentProvider>
             {children}
-          </LayoutContentProvider>
         </div>
       </body>
     </html>
