@@ -1,13 +1,13 @@
 import { ExternalLinkIcon } from "lucide-react";
 
 import { motion } from "motion/react";
-
-import { useEffect, useRef, useState } from "react";
-
+import { useLayoutContent } from "@/contexts/LayoutContentContext";
+import { useEffect, useRef, useState, memo } from "react";
 
 const animationParameters: any = { duration: 0.4, ease: [0.32, 1.05, 0.5, 1] };
 
-function LayoutMobile({ children }: { children?: React.ReactNode }) {
+function LayoutMobile() {
+  const content = useLayoutContent();
   const listItemStyle = "flex cursor-pointer my-2";
   const [menuOpen, setMenuOpen] = useState(false);
   const [navItems, setNavItems] = useState<{
@@ -17,10 +17,10 @@ function LayoutMobile({ children }: { children?: React.ReactNode }) {
     selected: 0,
     items: [
       { label: "about", type: "page", link: "/" },
-      { label: "projects", type: "page", link: "/about" },
-      { label: "bookmarks", type: "page", link: "/projects" },
-      { label: "resume", type: "page", link: "/contact" },
-      { label: "hackclub", type: "page", link: "/contact" },
+      { label: "projects", type: "page", link: "/projects" },
+      { label: "bookmarks", type: "page", link: "/bookmarks" },
+      { label: "resume", type: "page", link: "/resume" },
+      { label: "hackclub", type: "page", link: "/hc" },
       { label: "github", type: "link", link: "https://github.com/rinogodson" },
       {
         label: "linkedin",
@@ -54,6 +54,18 @@ function LayoutMobile({ children }: { children?: React.ReactNode }) {
     }
   }, [navItems.selected, menuOpen]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const path = window.location.pathname;
+    const selectedIndex = navItems.items.findIndex(
+      (item) => item.link === path,
+    );
+    if (selectedIndex !== -1 && selectedIndex !== navItems.selected) {
+      setNavItems((prev) => ({ ...prev, selected: selectedIndex }));
+    }
+  }, []);
+
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden">
       <div
@@ -69,12 +81,12 @@ function LayoutMobile({ children }: { children?: React.ReactNode }) {
         }}
       ></div>
       <div
-        className="p-[1em] pb-[13em] flex flex-col h-[100vh] w-[100%] bg-[#1A1A1A] overflow-scroll overflow-x-hidden no-scrollbar"
+        className="p-[1em] pb-[13em] items-center flex flex-col h-[100vh] w-[100%] bg-[#1A1A1A] overflow-scroll overflow-x-hidden no-scrollbar"
         onClick={() => {
           if (menuOpen) setMenuOpen(false);
         }}
       >
-        {children}
+        {content}
       </div>
       <motion.div
         initial={false}
@@ -122,13 +134,18 @@ function LayoutMobile({ children }: { children?: React.ReactNode }) {
                     itemRefs.current[item.label] = el;
                   }}
                   key={index}
-                  className={`${listItemStyle} ${menuOpen ? "text-white h-[2rem] p-0 m-0 items-start content-start w-full" : "text-[rgba(255,255,255,0.2)] text-[1.5em]"} text-center ${navItems.selected === index
+                  className={`${listItemStyle} ${menuOpen ? "text-white h-[2rem] p-0 m-0 items-start content-start w-full" : "text-[rgba(255,255,255,0.2)] text-[1.5em]"} text-center ${
+                    navItems.selected === index
                       ? `text-white bold ${menuOpen && "underline"} text-[1.5em]`
                       : "text-[1.5em]"
-                    }`}
+                  }`}
                   onClick={() => {
                     if (menuOpen) {
                       setNavItems((prev) => ({ ...prev, selected: index }));
+                      setTimeout(() => {
+                        if (typeof window === "undefined") return;
+                        window.location = item.link;
+                      }, 400);
                     }
                     setMenuOpen(!menuOpen);
                   }}
@@ -175,4 +192,4 @@ function LayoutMobile({ children }: { children?: React.ReactNode }) {
   );
 }
 
-export default LayoutMobile;
+export default memo(LayoutMobile);

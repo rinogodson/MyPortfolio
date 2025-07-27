@@ -1,6 +1,6 @@
-"use client";
 import Head from "next/head";
 import "./globals.css";
+import { LayoutContentProvider } from "@/contexts/LayoutContentContext";
 
 export default function RootLayout({
   children,
@@ -21,7 +21,11 @@ export default function RootLayout({
         <meta title="Rino Godson | Developer Portfolio" />
       </Head>
       <body className={`overflow-hidden antialiased bg-black text-white `}>
-        <div className="flex flex-col h-screen">{children}</div>
+        <div className="flex flex-col h-screen">
+          <LayoutContentProvider>
+            {children}
+          </LayoutContentProvider>
+        </div>
       </body>
     </html>
   );

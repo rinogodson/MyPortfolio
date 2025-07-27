@@ -30,11 +30,11 @@ export const NavigationList = () => {
     ],
   });
 
-
   React.useEffect(() => {
+    if (typeof window === "undefined") return;
     const path = window.location.pathname;
     const selectedIndex = navItems.items.findIndex(
-      (item) => item.link === path
+      (item) => item.link === path,
     );
     if (selectedIndex !== -1) {
       setNavItems({ ...navItems, selected: selectedIndex });

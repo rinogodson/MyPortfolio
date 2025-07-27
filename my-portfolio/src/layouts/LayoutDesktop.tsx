@@ -1,14 +1,17 @@
-import { NavigationList } from "@/components/NavigationList/NavigationList";
 import PageContent from "@/components/PageContent/PageContent";
+import { NavigationList } from "@/components/NavigationList/NavigationList";
+import { useLayoutContent } from "@/contexts/LayoutContentContext";
+import { memo } from "react";
 
-const LayoutDesktop = ({ children } : {children?: React.ReactNode}) => {
+function LayoutDesktop() {
+  const content = useLayoutContent();
   return (
     <div className="h-screen w-screen grid grid-cols-[1fr_60vw_1fr] place-items-end overflow-hidden">
       <div></div>
-      <PageContent>{children}</PageContent>
+      <PageContent>{content}</PageContent>
       <NavigationList />
     </div>
   );
-};
+}
 
-export default LayoutDesktop;
+export default memo(LayoutDesktop);
