@@ -1,5 +1,6 @@
 "use server"
 import ImageView from "@/components/ImageView/ImageView";
+import LayoutShell from "@/layouts/LayoutShell";
 import { Lora, IBM_Plex_Sans } from "next/font/google";
 const lora = Lora({
   subsets: ["latin"],
@@ -14,7 +15,7 @@ const ibmPlexSans = IBM_Plex_Sans({
 
 function About({ }) {
   return (
-    <>
+    <LayoutShell>
       <ImageView
         url={
           "https://images.unsplash.com/photo-1734983235410-cbbc5f5fcdaf?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -50,7 +51,7 @@ function About({ }) {
           <li>i use vim btw ;)</li>
         </ul>
       </div>
-    </>
+    </LayoutShell>
   );
 }
 

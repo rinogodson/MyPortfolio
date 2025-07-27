@@ -1,48 +1,33 @@
+// components/ResponsiveLayout.tsx
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import LayoutDesktop from "./LayoutDesktop";
-import LayoutMobile from "./LayoutMobile";
+import { useEffect, useState } from "react";
+import LayoutDesktop from "@/layouts/LayoutDesktop";
+import LayoutMobile from "@/layouts/LayoutMobile";
 
-export default function LayoutShell({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [isDesktop, setIsDesktop] = useState<"desktop" | "mobile" | null>(null);
-  const desktopLayoutRef = useRef<React.ReactNode>(null);
-  const mobileLayoutRef = useRef<React.ReactNode>(null);
+function useIsDesktop(breakpoint = 900) {
+  const [isDesktop, setIsDesktop] = useState<"desktop" | "mobile" | "loading">("loading");
 
   useEffect(() => {
     const updateMedia = () => {
-      setIsDesktop(window.innerWidth >= 900 ? "desktop" : "mobile");
+      setIsDesktop(window.innerWidth >= breakpoint ? "desktop" : "mobile");
     };
     updateMedia();
     window.addEventListener("resize", updateMedia);
     return () => window.removeEventListener("resize", updateMedia);
-  }, []);
+  }, [breakpoint]);
 
-  if (!isDesktop) return null;
+  return isDesktop;
+}
 
-  if (isDesktop === "desktop") {
-    if (!desktopLayoutRef.current) {
-      desktopLayoutRef.current = <LayoutDesktop />;
-    }
-    return (
-      <>
-        {desktopLayoutRef.current}
-        <div className="page-container">{children}</div>
-      </>
-    );
-  } else {
-    if (!mobileLayoutRef.current) {
-      mobileLayoutRef.current = <LayoutMobile />;
-    }
-    return (
-      <>
-        {mobileLayoutRef.current}
-        <div className="page-container">{children}</div>
-      </>
-    );
-  }
+export default function LayoutShell({ children }: { children: React.ReactNode }) {
+  const isDesktop = useIsDesktop();
+
+  if (isDesktop === "loading") return null;
+
+  return isDesktop === "desktop" ? (
+    <LayoutDesktop>{children}</LayoutDesktop>
+  ) : (
+    <LayoutMobile>{children}</LayoutMobile>
+  );
 }
