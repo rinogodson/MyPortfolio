@@ -48,7 +48,10 @@ export default function LayoutShell({ children }: { children: React.ReactNode })
     );
   }, [pathname, children, setLayoutContent]);
 
-  if (isDesktop === "loading") return null;
+  if (isDesktop === "loading") return (
+    <div className="md:bg-[#1A1A1A] lg:bg-[#1A1A1A] bg-[#1A1A1A] sm:bg-[#1A1A1A] h-screen w-screen">
+    </div>
+  );
 
   return isDesktop === "desktop" ? <LayoutDesktop /> : <LayoutMobile />;
 }
