@@ -29,6 +29,17 @@ export const NavigationList = () => {
       { label: "x (twitter)", type: "link", link: "https://x.com/rinogodson" },
     ],
   });
+
+
+  React.useEffect(() => {
+    const path = window.location.pathname;
+    const selectedIndex = navItems.items.findIndex(
+      (item) => item.link === path
+    );
+    if (selectedIndex !== -1) {
+      setNavItems({ ...navItems, selected: selectedIndex });
+    }
+  }, []);
   return (
     <div className="place-self-start mt-[calc(2em_+_15%)] ml-8 w-full">
       <nav className="flex flex-col items-start ">
