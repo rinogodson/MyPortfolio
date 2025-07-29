@@ -12,7 +12,6 @@ export const NavigationList = () => {
     items: [
       { label: "about", type: "page", link: "/" },
       { label: "projects", type: "page", link: "/projects" },
-      { label: "bookmarks", type: "page", link: "/bookmarks" },
       { label: "resume", type: "page", link: "/resume" },
       { label: "hackclub", type: "page", link: "/hc" },
       { label: "github", type: "link", link: "https://github.com/rinogodson" },
