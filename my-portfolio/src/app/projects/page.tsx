@@ -20,6 +20,7 @@ const ProjectList: {
   link?: string;
   repo: string;
   cover?: boolean;
+  bg?: string;
 }[] = [
   {
     img: "https://hc-cdn.hel1.your-objectstorage.com/s/v3/15d87ad3ca51a4c9af4c4d818f62a633762f7fe8_ode-favicon.png",
@@ -33,6 +34,7 @@ const ProjectList: {
   {
     img: "https://hc-cdn.hel1.your-objectstorage.com/s/v3/377cf0dd91854bd22bb648cdf976270b523616b3_image.png",
     cover: false,
+    bg: "#161616",
     title: "README Wizard",
     description:
       "A tool to generate beautiful README files for your GitHub projects. It helps you create a professional-looking README files.",
@@ -42,6 +44,7 @@ const ProjectList: {
   {
     img: "https://hc-cdn.hel1.your-objectstorage.com/s/v3/0a77321c13a2709418d4367df55159c04bcb0bba_image.png",
     cover: false,
+    bg: "#140901",
     title: "Snow-fi",
     description:
       "Holiday themed lofi music player. Listen to beautiful lofi music while enjoying the winter vibes. It features a beautiful snowing background and a cozy atmosphere.",
@@ -66,12 +69,15 @@ const ProjectList: {
   {
     img: "https://hc-cdn.hel1.your-objectstorage.com/s/v3/fde6faefae8db8112bd04ebe452b2ba8a35166d4_image.png",
     cover: false,
+    bg: "#0F0E05",
     title: "DreamShell",
     description: "Dream Journal for cool kids. CLI Based!",
     repo: "https://github.com/rinogodson/DreamShell",
   },
   {
     img: "https://hc-cdn.hel1.your-objectstorage.com/s/v3/e8cac56ebb8521909daf3541b9bf95b0f7dc1288_image.png",
+    cover: false,
+    bg: "#2B1434",
     title: "Squid Game Vote",
     description:
       "A voting app inspired by the Squid Game series. Vote for your favorite contestants and see the results in real-time.",
@@ -119,6 +125,7 @@ export default function Projects() {
             image={project.img}
             repo={project.repo}
             cover={project.cover}
+            bg={project.bg}
           />
         ))}
       </div>
@@ -133,6 +140,7 @@ const ProjectCard = ({
   image = "https://placehold.co/600x400",
   repo,
   cover = true,
+  bg,
 }: {
   title: string;
   description: string;
@@ -140,6 +148,7 @@ const ProjectCard = ({
   image?: string;
   repo?: string;
   cover?: boolean;
+  bg?: string;
 }) => {
   return (
     <div className="bg-[#0e0e0e] h-fit border-1 border-[#2b2b2b] p-4 rounded-[2rem] shadow-md hover:shadow-lg transition-shadow duration-300">
@@ -149,9 +158,10 @@ const ProjectCard = ({
         width={600}
         height={400}
         loading="lazy"
+        style={{ backgroundColor: bg || "none" }}
         className={
           "overflow-hidden w-full h-48 rounded-[1rem] mb-4 " +
-          (cover ? "object-cover" : "object-contain")
+          (cover ? "object-cover " : "object-contain ")
         }
       />
       <h2 className={"text-xl font-semibold mb-2 " + ibmPlexSans.className}>
